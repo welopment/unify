@@ -1,6 +1,5 @@
 part of unify;
 
-
 Result unify(
   _TT s1,
   _TT t1,

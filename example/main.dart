@@ -1,16 +1,16 @@
-part of unify;
+import 'package:unify/unify.dart';
 
 //void unify(  _TT s,  _TT t)
 
 void main() {
   //
 
-  _T term1 = t(1, 1, [
+  var term1 = t(1, 1, [
     v(1, 2),
     v(1, 2),
   ]);
   //
-  _T term2 = t(2, 1, [
+  var term2 = t(2, 1, [
     v(2, 2),
     t(2, 3, [
       v(2, 2),

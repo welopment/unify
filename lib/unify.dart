@@ -4,7 +4,7 @@ import 'dart:collection';
 
 part 'src/translate.dart';
 part 'src/copy.dart';
-part 'src/main.dart';
+//part 'src/main.dart';
 part 'src/IdKey.dart';
 part 'src/TT.dart';
 part 'src/V.dart';

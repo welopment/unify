@@ -1,7 +1,5 @@
 part of unify;
 
-
-
 /// The super class, from which Term and Var are derived
 /// Term
 class _TT {
