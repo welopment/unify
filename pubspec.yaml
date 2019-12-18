@@ -1,0 +1,13 @@
+name: "unify"
+version: "0.1.0"
+description: "An implementation of unification to enable logic programming in dart. "
+homepage: "https://github.com/welopment/unify"
+environment:
+  sdk: ">=2.6.0 <3.0.0"
+
+dependencies:
+  unification: ^0.1.0
+
+dev_dependencies:
+  #test: ^1.6.3
+  pedantic: ^1.0.0
