@@ -1,5 +1,5 @@
 name: "unify"
-version: "0.1.0"
+version: "0.1.3"
 description: "An implementation of unification to enable logic programming in dart. "
 homepage: "https://github.com/welopment/unify"
 environment:

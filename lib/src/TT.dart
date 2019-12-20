@@ -1,10 +1,12 @@
 part of unify;
 
-/// The super class, from which Term and Var are derived
-/// Term
+/// The term type, from which _T (term) and _V (variable) are derived.
+/// 
 class _TT {
-  /// Konstruktor nur für internen Gebrauch
-  /// sollte privat sein
+  /// The constructor is only for internal use! 
+  /// Use with care! 
+  /// Terms that have the same clause and id 
+  /// must have the same unique must be the same object.  
   _TT(int clause, int id, int unique)
       : _id = id,
         _clause = clause,
@@ -16,9 +18,10 @@ class _TT {
 
   ///
   /// factory implementiert Identität, aufgrund von claus und id
+  /// Use with care! Terms that are given 
+  /// the same clause and id will be the same object
   factory _TT.unique(int clause, int id) {
     _unique++;
-    int _uni = _unique;
 
     if (identicalId.containsKey(IdKey(clause, id))) {
       return identicalId[IdKey(clause, id)];
@@ -53,10 +56,15 @@ class _TT {
 
   @override
   int get hashCode => _uni;
+  String string(int i) {
+    var ret =
+        '_TT ${clause.toString()}.${id.toString()}|${unique.toString()}/replacedBy(${replacedBy})';
+    return ret;
+  }
 
   @override
   String toString() {
-    return '_TT ${clause.toString()}.${id.toString()}|${unique.toString()}/replacedBy(${replacedBy})';
+    return string(0);
   }
 
   /// Replacements, zunächst null
@@ -71,13 +79,47 @@ class _TT {
     tbr._replacedBy = o;
   }
 
-  _TT get reallyGet => _reallyGet(this);
-  _TT _reallyGet(_TT term) {
+  _TT get reallyGet {
+    bool Function(_TT) s = iis(<int>{});
+    return _reallyGet(this, s);
+  }
+
+  void pr(String s, _TT term) {
+    print(s +
+        '  ' +
+        term.runtimeType.toString() +
+        ' ' +
+        term.clause.toString() +
+        '.' +
+        term.id.toString() +
+        ' uni ' +
+        term.unique.toString());
+  }
+
+  // zirkel aware
+  _TT _reallyGet(_TT term, bool Function(_TT) testCircular) {
+    print(' _reallyGet ' +
+        term.runtimeType.toString() +
+        ' ' +
+        term.clause.toString() +
+        '.' +
+        term.id.toString() +
+        ' uni ' +
+        term.unique.toString());
+
+    if (testCircular(term)) {
+      throw Exception('_reallyGet: circular in ' +
+          term.runtimeType.toString() +
+          ' ' +
+          term.clause.toString() +
+          '.' +
+          term.id.toString());
+    }
     dynamic sub = term.replacedBy;
     if (sub == null) {
       return term;
     } else if (sub != null && sub is _TT) {
-      return _reallyGet(sub);
+      return _reallyGet(sub, testCircular);
     } else {
       throw Exception('_reallyGet: unknown');
     }
@@ -107,21 +149,20 @@ class _TT {
 // replacements ausführen
   _TT get substitute => _substitute(this);
 
-  _TT _substitute(_TT term) {
-    var t = term.reallyGet; // last but null
+  _TT _substitute(_TT trm) {
+    _TT term = trm.reallyGet; // last but null
     //
-    if (t is _T) {
-      var ret = _T(
-          t.clause,
-          t.id,
-          t.unique,
-          (t.termlist).map((_TT sub) {
+    if (term is _T) {
+      var ret = t(
+          term.clause,
+          term.id,
+          (term.termlist).map((_TT sub) {
             return _substitute(sub);
           }).toList());
       return ret;
       //
-    } else if (t is _V) {
-      return t;
+    } else if (term is _V) {
+      return term;
       //
     } else {
       throw Exception('substitute: unknown');
@@ -131,8 +172,11 @@ class _TT {
   bool Function(_TT) iis(Set<int> start) {
     return (_TT x) {
       if (start.contains(x.unique)) {
+        pr('iis: contains', x);
         return true;
       } else {
+        pr('iis: add', x);
+
         start.add(x.unique);
         return false;
       }

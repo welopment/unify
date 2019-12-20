@@ -2,14 +2,14 @@ analyzer:
   errors:
     invalid_assignment: error
     missing_return: error
-    dead_code: error
-    unused_local_variable: false
-    unused_import: false
+    dead_code: false
+    unused_local_variable: true
+    unused_import: true
     omit_local_variable_types: false
-    
+
   strong-mode:
-    implicit-casts: false
-    implicit-dynamic: false
+    implicit-casts: true
+    implicit-dynamic: true
   enable-experiment:
     - non-nullable
     - extension-methods
@@ -25,4 +25,3 @@ linter:
 #    - slash_for_doc_comments
 
 include: package:pedantic/analysis_options.yaml
-

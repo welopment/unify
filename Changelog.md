@@ -1,5 +1,15 @@
 # Changelog
 
+
+## 0.1.4
+- Fix version
+
+## 0.1.3
+- Improve example and README
+
+## 0.1.1
+- Remove unused variables
+
 ## 0.1.0
 - Publish initial release
 

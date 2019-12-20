@@ -12,7 +12,6 @@ class _T extends _TT {
     //
     // vereinfachen, auf super beziehen
     _TT._unique++;
-    int _uni = _TT._unique;
 
     var ck = _TT.identicalId.containsKey(IdKey(clause, id));
     var t = _TT.identicalId[IdKey(clause, id)];

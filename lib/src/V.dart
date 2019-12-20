@@ -9,7 +9,6 @@ class _V extends _TT {
   // vereinfachen, auf super beziehen
   factory _V.unique(int clause, int id) {
     _TT._unique++;
-    int _uni = _TT._unique;
     var ck = _TT.identicalId.containsKey(IdKey(clause, id));
     var v = _TT.identicalId[IdKey(clause, id)];
     if (ck && v is _V) {

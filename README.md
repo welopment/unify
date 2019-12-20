@@ -29,33 +29,38 @@ Modify the example to test more less simple tasks!
 # Example:
 
 ```dart
-  import "package:unification/unification.dart";
+ import 'package:unify/unify.dart';
+
+void main() {
   
-  UnificationR<String, String> u = UnificationR<String, String>();
 
-  List<Tuple<String, Termtype<String, String>>> res1 = u.unify(
-      <Tuple<Var<String, String>, Var<String, String>>>[]..add(
-          Tuple<Var<String, String>, Var<String, String>>(
-            Var('a'),
-            Var('a'),
-          ),
-        ),
-      <Tuple<String, Termtype<String, String>>>[]);
+  // occurs check positive:
 
-  List<Tuple<String, Termtype<String, String>>> res2 = u.unify(
-      <Tuple<Var<String, String>, Var<String, String>>>[]..add(
-          Tuple(
-            Var('a'),
-            Var('b'),
-          ),
-        ),
-      <Tuple<String, Termtype<String, String>>>[]);
+  var term1 = t(1, 1, [
+    v(1, 2),
+    v(1, 2),
+  ]);
 
-  print(res1);
-  print(res2);
+  //
+  var term2 = t(2, 1, [
+    v(2, 2),
+    t(2, 3, [
+      v(2, 2),
+    ]),
+  ]);
+
+  //
+  print('\nterm1      > ' + term1.toString());
+  print('\nterm2      > ' + term2.toString());
+  
+  bool res = mgu(term1, term2);
+  
+  print('\nunifiable  > ' + res.toString());
+  print('\nterm1      > ' + term1.toString());
+  print('\nterm2      > ' + term2.toString());
+
+}
 ```
-
-
 
 [Read more](https://en.wikipedia.org/wiki/Unification) 
 about unification in logic on Wikipedia.
