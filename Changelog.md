@@ -1,8 +1,11 @@
 # Changelog
 
 
+## 0.1.5
+- Improve docs and README
+
 ## 0.1.4
-- Fix version
+- Improve example and README
 
 ## 0.1.3
 - Improve example and README

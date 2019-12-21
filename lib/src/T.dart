@@ -9,15 +9,16 @@ class _T extends _TT {
 
   //
   factory _T.unique(int clause, int id, List<_TT> list) {
-    //
-    // vereinfachen, auf super beziehen
     _TT._unique++;
-
-    var ck = _TT.identicalId.containsKey(IdKey(clause, id));
-    var t = _TT.identicalId[IdKey(clause, id)];
-
-    if (ck && t is _T) {
-      return t;
+    if (_TT.identicalId.containsKey(IdKey(clause, id))) {
+      _TT t = _TT.identicalId[IdKey(clause, id)];
+      if (t is _T) {
+        return t;
+      } else if (t is _V) {
+        throw Exception('_T.unique: Wrong type.');
+      } else {
+        throw Exception('_T.unique: Unknown case.');
+      }
     } else {
       _T i = _T(clause, id, _TT._unique, list);
       _TT.identicalId[IdKey(clause, id)] = i;

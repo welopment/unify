@@ -1,28 +1,29 @@
 part of unify;
 
 /// The term type, from which _T (term) and _V (variable) are derived.
-/// 
+///
 class _TT {
-  /// The constructor is only for internal use! 
-  /// Use with care! 
-  /// Terms that have the same clause and id 
-  /// must have the same unique must be the same object.  
+  /// The constructor is only for internal use!
+  /// Use with care!
+  /// Terms that have the same clause and id
+  /// must have the same unique must be the same object.
   _TT(int clause, int id, int unique)
       : _id = id,
         _clause = clause,
         _uni = unique {
+    // Dieser Constructor wird gebraucht
     if (identicalId.containsKey(IdKey(clause, id))) {
       throw Exception('not unique');
-    }
+    } // weitere Test
   }
 
   ///
   /// factory implementiert Identität, aufgrund von claus und id
-  /// Use with care! Terms that are given 
+  /// Use with care! Terms that are given
   /// the same clause and id will be the same object
   factory _TT.unique(int clause, int id) {
+    throw Exception('_TT.unique: Not implemented!?');
     _unique++;
-
     if (identicalId.containsKey(IdKey(clause, id))) {
       return identicalId[IdKey(clause, id)];
     } else {
@@ -84,6 +85,27 @@ class _TT {
     return _reallyGet(this, s);
   }
 
+  // zirkel aware
+  _TT _reallyGet(_TT term, bool Function(_TT) testCircular) {
+    if (testCircular(term)) {
+      throw Exception('_reallyGet: circular in ' +
+          term.runtimeType.toString() +
+          ' ' +
+          term.clause.toString() +
+          '.' +
+          term.id.toString());
+    }
+
+    dynamic sub = term.replacedBy;
+    if (sub == null) {
+      return term;
+    } else if (sub != null && sub is _TT) {
+      return _reallyGet(sub, testCircular);
+    } else {
+      throw Exception('_reallyGet: unknown');
+    }
+  }
+
   void pr(String s, _TT term) {
     print(s +
         '  ' +
@@ -96,56 +118,50 @@ class _TT {
         term.unique.toString());
   }
 
-  // zirkel aware
-  _TT _reallyGet(_TT term, bool Function(_TT) testCircular) {
-    print(' _reallyGet ' +
-        term.runtimeType.toString() +
-        ' ' +
-        term.clause.toString() +
-        '.' +
-        term.id.toString() +
-        ' uni ' +
-        term.unique.toString());
-
-    if (testCircular(term)) {
-      throw Exception('_reallyGet: circular in ' +
-          term.runtimeType.toString() +
-          ' ' +
-          term.clause.toString() +
-          '.' +
-          term.id.toString());
-    }
-    dynamic sub = term.replacedBy;
-    if (sub == null) {
-      return term;
-    } else if (sub != null && sub is _TT) {
-      return _reallyGet(sub, testCircular);
-    } else {
-      throw Exception('_reallyGet: unknown');
-    }
-  }
-
   // zyklen entdecken
-  //_TT runThrough(_TT Function(_TT) f) => _runThrough(this, f);
+  // TODO
   bool get occurs => _occurs(this, iis(<int>{}));
 
-  bool _occurs(_TT term, bool Function(_TT) f) {
-    var t = term.reallyGet; // last but null
-    //
+  bool _occurs(_TT term, bool Function(_TT) testCircular) {
+    _TT t = term.reallyGet; // tests circularity of replacements
+    // tests circularity of
+    print(" test _occurs ");
+    if (testCircular(t)) {
+      print(" _occurs ");
+      return true;
+    }
     if (t is _T) {
-      bool ret = (t.termlist).map((_TT sub) {
-        return _occurs(sub, f);
-      }).fold<bool>(true, (bool acc, bool elem) => acc && elem);
-      return ret;
+      (t.termlist).forEach((_TT sub) {
+        _occurs(sub, testCircular);
+      });
+      return false;
       //
     } else if (t is _V) {
-      return f(t);
+      return false;
       //
     } else {
       throw Exception('_occurs: unknown');
     }
   }
 
+  /*
+  bool _occurs(_TT term, bool Function(_TT) testCircular) {
+    _TT t = term.reallyGet; // last but null
+    //
+    if (t is _T) {
+      bool ret = (t.termlist).map((_TT sub) {
+        return _occurs(sub, testCircular);
+      }).fold<bool>(true, (bool acc, bool elem) => acc && elem);
+      return ret;
+      //
+    } else if (t is _V) {
+      return testCircular(t);
+      //
+    } else {
+      throw Exception('_occurs: unknown');
+    }
+  }
+  */
 // replacements ausführen
   _TT get substitute => _substitute(this);
 
@@ -172,10 +188,10 @@ class _TT {
   bool Function(_TT) iis(Set<int> start) {
     return (_TT x) {
       if (start.contains(x.unique)) {
-        pr('iis: contains', x);
+        //pr('iis: contains', x);
         return true;
       } else {
-        pr('iis: add', x);
+        //pr('iis: add', x);
 
         start.add(x.unique);
         return false;

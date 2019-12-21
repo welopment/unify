@@ -6,13 +6,18 @@ class _V extends _TT {
   _V(int clause, int id, int unique) : super(clause, id, unique);
 
   //
-  // vereinfachen, auf super beziehen
+  //
   factory _V.unique(int clause, int id) {
     _TT._unique++;
-    var ck = _TT.identicalId.containsKey(IdKey(clause, id));
-    var v = _TT.identicalId[IdKey(clause, id)];
-    if (ck && v is _V) {
-      return v;
+    if (_TT.identicalId.containsKey(IdKey(clause, id))) {
+      _TT v = _TT.identicalId[IdKey(clause, id)];
+      if (v is _V) {
+        return v;
+      } else if (v is _T) {
+        throw Exception('_V.unique: Wrong type.');
+      } else {
+        throw Exception('_V.unique: Unknown case.');
+      }
     } else {
       _V i = _V(clause, id, _TT._unique);
       _TT.identicalId[IdKey(clause, id)] = i;

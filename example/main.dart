@@ -58,7 +58,7 @@ Result testUnify() {
   var term2 = t(2, 1, [
     v(2, 2),
     t(2, 3, [
-      v(2, 22),
+      v(2, 2),
     ]),
   ]);
 
@@ -81,8 +81,8 @@ Result testUnify() {
   bool goAhead = notOccursS && notOccursT && unifiable;
 
   if (goAhead) {
-    t1.substitute;
-    t2.substitute;
+    // t1.substitute;
+    //t2.substitute;
     return Result((t1), (t2), unifiable);
   } else {
     throw Exception('unify: not unifiable');

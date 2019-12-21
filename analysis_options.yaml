@@ -2,10 +2,10 @@ analyzer:
   errors:
     invalid_assignment: error
     missing_return: error
-    dead_code: false
+    dead_code: true
     unused_local_variable: true
     unused_import: true
-    omit_local_variable_types: false
+    omit_local_variable_types: true
 
   strong-mode:
     implicit-casts: true

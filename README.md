@@ -1,7 +1,15 @@
-Unification
-===========
+Unify
+=====
 
-A library providing implementations of first-order logical unification for dart and flutter.
+An implementation of Ruzicka und Privara' algorithm of logical unification for dart and flutter.
+
+This algorithm is an optimization of the algorithm by Corbin und Bidoit, which itself is based on Robinson's algorithmus.
+
+Robinson's algorithm is inefficient if subterms are contained in several locations of a term tree, leading to unnecessary calculations. Ruzicka und Privara's algorithm takes the structure of terms into account by using directed acyclic graphs instead of the original term trees to avoid unnecessary calculations.
+
+Ideally, in this reduced DAG all equal subterms are represented by one identical subgraph.
+
+Additionally, the occurs check is executed after the actual unification as search for cylces in the resulting DAG.
 
 # Getting started
 
@@ -9,13 +17,13 @@ Add the dependency to your pubspec.yaml file:
 
 ```yaml
 dependencies:
-  unification: #latest version
+  unify: #latest version
 ```
 
 Add the import statement to your source files:
 
 ```dart
-import 'package:unification/unification.dart';
+ import 'package:unify/unify.dart';
 ```
 
 Or, give it a try and run the example:
@@ -24,7 +32,7 @@ Or, give it a try and run the example:
 dart ./example/main.dart 
 ```
 
-Modify the example to test more less simple tasks!
+Modify the example to test more complex tasks!
 
 # Example:
 
@@ -62,8 +70,7 @@ void main() {
 }
 ```
 
-[Read more](https://en.wikipedia.org/wiki/Unification) 
-about unification in logic on Wikipedia.
+
 
 
 
