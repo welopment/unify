@@ -1,5 +1,5 @@
 name: "unify"
-version: "0.1.5"
+version: "0.1.6"
 description: "An implementation of logical unification for dart and flutter based on the algorithm by Ruzicka und Privara."
 homepage: "https://github.com/welopment/unify"
 environment:

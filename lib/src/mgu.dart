@@ -1,41 +1,38 @@
 part of unify;
 
-/// Unification nach Rusizca Privara
-
+/// Rusizca & Privara's Unification Algorithm
 bool mgu(
-  _TT s,
-  _TT t,
+  _TT s1,
+  _TT t1,
 ) {
-  //print('\n All . All > ' + s.toString() + ' | ' + t.toString());
+  var s = s1.reallyGet;
+  var t = t1.reallyGet;
 
-  bool b = true;
-  // Case
+  var b = true;
+  // Case 1
   if (s is _T && t is _T) {
-    // print('\n _T . _T > ' + s.toString() + ' | ' + t.toString());
-    // Vergleich der Namen
-    // einzige Aktion die sich auf aktuellen term bezieht, danach nur noch subterme
     if (s.name != t.name) {
       return false;
     }
-    // jetzt subterme verarbeiten
-    List<_TT> l1 = s.termlist, l2 = t.termlist;
+    // unify subterms
+    var l1 = s.termlist, l2 = t.termlist;
 
     int len1 = l1.length, len2 = l2.length;
 
     if (len1 != len2) {
-      throw Exception('unify: list of different lengths.');
+      throw Exception('unify: lists of different lengths');
     }
 
-    for (int i = 0; i < len1; i++) {
-      _TT sub1 = l1[i], sub2 = l2[i];
+    for (var i = 0; i < len1; i++) {
+      _TT s1 = l1[i], s2 = l2[i];
+
+      var sub1 = s1.reallyGet;
+      var sub2 = s2.reallyGet;
 
       if (sub1.visited || sub2.visited) {
         b = false;
         //return false;
-        // vielleicht den replacedBy nachgehen.
       } else if (sub1.unique != sub2.unique) {
-        //print('\nstart visit');
-
         sub1.visited = true;
         sub2.visited = true;
 
@@ -43,39 +40,25 @@ bool mgu(
 
         sub1.visited = false;
         sub2.visited = false;
-        //print('\nleave visit');
       }
     }
-    // wenn die subterme unifizierbar sind, kann der aktuelle term ersetzt werden.
+    // replace term, if subterms unifiable
     if (b) {
-      //print('\n>> replace: ' + s.toString() + '\n>> durch: ' + t.toString());
       s.replacedBy = t;
     }
   }
-  // Case
+  // Case 2
   else if (s is _V && t is _V) {
-    //print('\n _V . _V > ' + s.toString() + ' | ' + t.toString());
-
-    //print('\n>> replace: ' + s.toString() + '\n>>  durch: ' + t.toString());
-
     s.replacedBy = t;
     b = true;
 
-    // Case
+    // Case 3
   } else if (s is _V && t is _T) {
-    // print('\n _V . _T > ' + s.toString() + ' | ' + t.toString());
-
-    // print('\n>> replace: ' + s.toString() + '\n>>  durch: ' + t.toString());
-
     s.replacedBy = t;
     b = true;
 
-    // Case
+    // Case 4
   } else if (s is _T && t is _V) {
-    //print('\n _T . _V > ' + s.toString() + ' | ' + t.toString());
-
-    //print('\n>> replace: ' + t.toString() + '\n>> durch: ' + s.toString());
-
     t.replacedBy = s;
     b = true;
 

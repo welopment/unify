@@ -22,6 +22,6 @@ linter:
     - annotate_overrides
     - avoid_init_to_null
     - sort_constructors_first
-#    - slash_for_doc_comments
+    - slash_for_doc_comments
 
 include: package:pedantic/analysis_options.yaml

@@ -1,6 +1,9 @@
 # Changelog
 
 
+## 0.1.6
+- remove prints
+
 ## 0.1.5
 - Improve docs and README
 

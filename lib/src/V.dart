@@ -2,13 +2,17 @@ part of unify;
 
 /// Variable _V
 class _V extends _TT {
-  //
+  /// not for use in public ;-)
+  /// terms with same [clause] and [id]
+  /// must have same [unique] and
+  /// must be the same object.
   _V(int clause, int id, int unique) : super(clause, id, unique);
 
-  //
-  //
+  /// turns symbolic identity into object identity
+  /// terms with same [clause] and [id]
+  /// must have same [unique] and
+  /// must be the same object.
   factory _V.unique(int clause, int id) {
-    _TT._unique++;
     if (_TT.identicalId.containsKey(IdKey(clause, id))) {
       _TT v = _TT.identicalId[IdKey(clause, id)];
       if (v is _V) {
@@ -19,14 +23,36 @@ class _V extends _TT {
         throw Exception('_V.unique: Unknown case.');
       }
     } else {
-      _V i = _V(clause, id, _TT._unique);
+      _TT._unique++;
+      var i = _V(clause, id, _TT._unique);
       _TT.identicalId[IdKey(clause, id)] = i;
       return i;
     }
   }
 
+  /// string representation of a variable object
   @override
   String toString() {
-    return '_V ${clause.toString()}.${id.toString()}|${super.unique.toString()}/replacedBy(${replacedBy})';
+    return '_V'
+        ' ${clause.toString()}.${id.toString()}'
+        '|${super.unique.toString()}'
+        '/replacedBy(${replacedBy})';
+  }
+
+  /// equality requires same [clause] and [id]
+  @override
+  bool operator ==(dynamic other) {
+    if (other is _T) {
+      // 1.
+      var equalclauses = clause == other.clause;
+
+      // 2.
+      var equalnames = id == other.id;
+
+      // 1. + 2. + 3.
+      return equalclauses && equalnames;
+    } else {
+      return false;
+    }
   }
 }
