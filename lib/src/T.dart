@@ -16,7 +16,7 @@ class _T extends _TT {
   /// must be the same object.
   factory _T.unique(int clause, int id, List<_TT> list) {
     if (_TT.identicalId.containsKey(IdKey(clause, id))) {
-      _TT t = _TT.identicalId[IdKey(clause, id)];
+      var t = _TT.identicalId[IdKey(clause, id)];
       if (t is _T) {
         return t;
       } else if (t is _V) {
@@ -60,8 +60,8 @@ class _T extends _TT {
       var equalclauses = clause == other.clause;
 
       // 2.
-      int tl = termlist.length;
-      int otl = other.termlist.length;
+      var tl = termlist.length;
+      var otl = other.termlist.length;
       var equallengths = tl == otl;
 
       // 3.

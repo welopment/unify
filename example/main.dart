@@ -16,7 +16,8 @@ void main() {
 
   // Always use different numbers for differents clauses!
   // Clause 3
-  var term3 = t(3, 1, [
+  //var term3 =
+  t(3, 1, [
     v(3, 3),
     v(3, 2),
     v(3, 2),
@@ -25,7 +26,8 @@ void main() {
     v(3, 4),
   ]);
   // Clause 4
-  var term4 = t(4, 1, [
+  //var term4 =
+  t(4, 1, [
     v(4, 6),
     v(4, 2),
     t(4, 3, [

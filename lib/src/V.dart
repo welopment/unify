@@ -14,7 +14,7 @@ class _V extends _TT {
   /// must be the same object.
   factory _V.unique(int clause, int id) {
     if (_TT.identicalId.containsKey(IdKey(clause, id))) {
-      _TT v = _TT.identicalId[IdKey(clause, id)];
+      var v = _TT.identicalId[IdKey(clause, id)];
       if (v is _V) {
         return v;
       } else if (v is _T) {

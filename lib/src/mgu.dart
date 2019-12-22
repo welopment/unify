@@ -17,14 +17,14 @@ bool mgu(
     // unify subterms
     var l1 = s.termlist, l2 = t.termlist;
 
-    int len1 = l1.length, len2 = l2.length;
+    var len1 = l1.length, len2 = l2.length;
 
     if (len1 != len2) {
       throw Exception('unify: lists of different lengths');
     }
 
     for (var i = 0; i < len1; i++) {
-      _TT s1 = l1[i], s2 = l2[i];
+      var s1 = l1[i], s2 = l2[i];
 
       var sub1 = s1.reallyGet;
       var sub2 = s2.reallyGet;
