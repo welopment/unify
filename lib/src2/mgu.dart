@@ -1,4 +1,4 @@
-part of unify;
+part of unify2;
 
 /// Rusizca & Privara's Unification Algorithm
 bool mgu(

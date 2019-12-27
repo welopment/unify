@@ -31,7 +31,7 @@ Add the import statement to your source files:
 Or, give it a try and run the example:
 
 ```dart
-dart ./example/main.dart 
+dart --enable-experiment=non-nullable ./example/main.dart 
 ```
 
 Modify the example to test more complex tasks!

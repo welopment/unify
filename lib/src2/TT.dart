@@ -1,4 +1,4 @@
-part of unify;
+part of unify2;
 
 /// term type, from which _T (term) and _V (variable) are derived.
 ///

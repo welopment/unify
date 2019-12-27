@@ -1,4 +1,4 @@
-part of unify;
+part of unify1;
 
 /// Term _T
 class _T extends _TT {
@@ -8,29 +8,7 @@ class _T extends _TT {
   /// must be the same object.
   _T(int clause, int id, int unique, List<_TT> t)
       : _termlist = t,
-        super(clause, id, unique);
-
-  /// turns symbolic identity into object identity
-  /// terms with same [clause] and [id]
-  /// must have same [unique] and
-  /// must be the same object.
-  factory _T.unique(int clause, int id, List<_TT> list) {
-    if (_TT.identicalId.containsKey(IdKey(clause, id))) {
-      var t = _TT.identicalId[IdKey(clause, id)];
-      if (t is _T) {
-        return t;
-      } else if (t is _V) {
-        throw Exception('_T.unique: Wrong type.');
-      } else {
-        throw Exception('_T.unique: Unknown case.');
-      }
-    } else {
-      _TT._unique++;
-      var i = _T(clause, id, _TT._unique, list);
-      _TT.identicalId[IdKey(clause, id)] = i;
-      return i;
-    }
-  }
+        super(clause, id);
 
   List<_TT> _termlist;
 
@@ -45,8 +23,8 @@ class _T extends _TT {
   String toString() {
     return '_T '
         '${clause.toString()}.${id.toString()}|'
-        '${super.unique.toString()}'
-        '/replacedBy(${replacedBy})'
+        ''
+        ''
         '${termlist}';
   }
 

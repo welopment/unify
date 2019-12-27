@@ -3,7 +3,7 @@ version: "0.1.6"
 description: "An implementation of logical unification for dart and flutter based on the algorithm by Ruzicka und Privara."
 homepage: "https://github.com/welopment/unify"
 environment:
-  sdk: ">=2.6.0 <3.0.0"
+  sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
   unification: ^0.1.0
