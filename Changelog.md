@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.2.0
+- new implementation
+
 ## 0.1.6
 - remove prints
 

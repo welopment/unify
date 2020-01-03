@@ -3,8 +3,8 @@ part of unify2;
 /// For use in a TreeMap,
 /// helps factory constructor turn
 /// symbolic identity (clause, id) into object identity
-class IdKey implements Comparable<IdKey> {
-  IdKey(int clause, int id)
+class Key implements Comparable<Key> {
+  Key(int clause, int id)
       : _id = id,
         _clause = clause;
   // clause
@@ -15,8 +15,8 @@ class IdKey implements Comparable<IdKey> {
   int get id => _id;
   //
   @override
-  int compareTo(IdKey other) {
-    if (id == other.id && clause == other.clause) {
+  int compareTo(Key other) {
+    if (clause == other.clause && id == other.id) {
       return 0;
     } else {
       // implements lexical ordering
@@ -27,8 +27,8 @@ class IdKey implements Comparable<IdKey> {
   @override
   bool operator ==(dynamic other) {
     //
-    if (other is IdKey) {
-      return id == other.id && clause == other.clause;
+    if (other is Key) {
+      return clause == other.clause && id == other.id;
       //
     } else {
       return false;

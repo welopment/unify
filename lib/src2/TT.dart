@@ -12,7 +12,7 @@ class _TT {
         _clause = clause,
         _uni = unique {
     // Dieser Constructor wird gebraucht
-    if (identicalId.containsKey(IdKey(clause, id))) {
+    if (identicalId.containsKey(Key(clause, id))) {
       throw Exception('not unique');
     } // weitere Test
   }
@@ -24,8 +24,8 @@ class _TT {
   factory _TT.unique(int clause, int id) {
     //throw Exception('_TT.unique: Not implemented!?');
 
-    if (identicalId.containsKey(IdKey(clause, id))) {
-      var ret = identicalId[IdKey(clause, id)];
+    if (identicalId.containsKey(Key(clause, id))) {
+      var ret = identicalId[Key(clause, id)];
       if (ret is _TT) {
         return ret;
       } else {
@@ -34,12 +34,12 @@ class _TT {
     } else {
       _unique++;
       var i = _TT(clause, id, _unique);
-      identicalId[IdKey(clause, id)] = i;
+      identicalId[Key(clause, id)] = i;
       return i;
     }
   }
 
-  static SplayTreeMap<IdKey, _TT> identicalId = SplayTreeMap<IdKey, _TT>();
+  static SplayTreeMap<Key, _TT> identicalId = SplayTreeMap<Key, _TT>();
 
   /// number of the clause, like a namespace for id
   final int _clause;

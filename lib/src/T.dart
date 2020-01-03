@@ -1,4 +1,4 @@
-part of unify1;
+part of unify;
 
 /// Term _T
 class _T extends _TT {
@@ -6,7 +6,7 @@ class _T extends _TT {
   /// terms with same [clause] and [id]
   /// must have same [unique] and
   /// must be the same object.
-  _T(int clause, int id, int unique, List<_TT> t)
+  _T(int clause, int id, List<_TT> t)
       : _termlist = t,
         super(clause, id);
 
@@ -21,19 +21,16 @@ class _T extends _TT {
   /// returns a string representation of a term object
   @override
   String toString() {
-    return '_T '
-        '${clause.toString()}.${id.toString()}|'
-        ''
-        ''
+    return '_T'
+        '${clause.toString()}.${id.toString()}'
         '${termlist}';
   }
 
   /// equality requires same [clause], [id], and [termlist]s
-
   @override
   bool operator ==(dynamic other) {
     if (other is _T) {
-      // ????
+      //
       // 1.
       var equalclauses = clause == other.clause;
 
@@ -54,7 +51,7 @@ class _T extends _TT {
             : resultequallist = false;
       }
 
-      // 1. + 2. + 3. + 4.
+      // 1. ^ 2. ^ 3. ^ 4.
       return equalclauses && equallengths && equalnames && resultequallist;
     } else {
       return false;

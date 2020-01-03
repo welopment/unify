@@ -1,13 +1,13 @@
-library unify1;
+library unify;
 
 import 'dart:collection';
 
-part 'src1/TT.dart';
-part 'src1/Bindings.dart';
-part 'src1/Substitution.dart';
-part 'src1/Result.dart';
-part 'src1/T.dart';
-part 'src1/V.dart';
-part 'src1/IdKey.dart';
-part 'src1/mgu.dart';
-part 'src1/utils.dart';
+part 'src/TT.dart';
+part 'src/Bindings.dart';
+part 'src/Substitution.dart';
+part 'src/Result.dart';
+part 'src/T.dart';
+part 'src/V.dart';
+part 'src/Key.dart';
+part 'src/mgu.dart';
+part 'src/utils.dart';
