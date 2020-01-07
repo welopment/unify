@@ -7,7 +7,7 @@ class Key implements Comparable<Key> {
   Key(int clause, int id)
       : _clause = clause,
         _id = id;
-  Key.from(_TT tt)
+  Key.from(Term tt)
       : _clause = tt.clause,
         _id = tt.id;
   // clause
@@ -23,6 +23,7 @@ class Key implements Comparable<Key> {
       return 0;
     } else {
       // implements lexical ordering
+      // TODO
       return (2 * clause.compareTo(other.clause)) + id.compareTo(other.id);
     }
   }

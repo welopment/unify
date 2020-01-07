@@ -1,46 +1,44 @@
 import 'package:unify/unify.dart';
 
 void main() {
-  var t1 = t(1, 1, [v(1, 2), v(1, 2)]);
-  var t2 = t(2, 1, [
-    t(2, 2, [v(2, 3)]),
+  var t1 = f(1, 1, [v(1, 2), v(1, 2)]);
+  var t2 = f(2, 1, [
+    f(2, 2, [v(2, 3)]),
     v(2, 4) // circularity v(2, 3)
   ]);
   var t3 = v(1, 2);
   var t4 = v(2, 1);
-  var t5 = t(1, 1, [
+  var t5 = f(1, 1, [
     v(1, 2),
     v(1, 2),
     v(1, 3),
-    t(1, 4, [
-      t(1, 5, [v(1, 3)])
+    f(1, 4, [
+      f(1, 5, [v(1, 3)])
     ]),
     v(1, 3),
   ]);
-  var t6 = t(2, 1, [
-    t(2, 2, [v(2, 3)]),
+  var t6 = f(2, 1, [
+    f(2, 2, [v(2, 3), n(2, 7, 1.4324), a(2, 8, 'zwei acht')]),
     v(2, 4),
     v(2, 3),
     v(2, 5),
     v(2, 4),
   ]);
 
-// Clause 1
-  var t7 = t(1, 1, [
+//
+  var t7 = f(1, 1, [
     v(1, 2),
     v(1, 2),
   ]);
-  // Clause 2
-  var t8 = t(2, 1, [
+  var t8 = f(2, 1, [
     v(2, 2),
-    t(2, 3, [
+    f(2, 3, [
       v(2, 4), //  circularity: v(2, 2)
     ]),
   ]);
 
-  // Always use different numbers for differents clauses!
-  // Clause 3
-  var t9 = t(3, 1, [
+  //
+  var t9 = f(3, 1, [
     v(3, 3),
     v(3, 2),
     v(3, 2),
@@ -48,11 +46,11 @@ void main() {
     v(3, 4),
     v(3, 4),
   ]);
-  // Clause 4
-  var t10 = t(4, 1, [
+  //
+  var t10 = f(4, 1, [
     v(4, 6),
     v(4, 2),
-    t(4, 3, [
+    f(4, 3, [
       v(4, 4),
     ]),
     v(4, 5),

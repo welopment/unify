@@ -64,4 +64,4 @@ linter:
     - use_rethrow_when_possible
     - valid_regexps
 
-include: package:pedantic/analysis_options.yaml
+// include: package:pedantic/analysis_options.yaml

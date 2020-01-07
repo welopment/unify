@@ -1,10 +1,11 @@
 part of unify;
 
-/// term type, from which _T (term) and _V (variable) are derived.
+/// term type, from which Compound
+///  and Variable  are derived.
 ///
-class _TT {
+class Term {
   /// not for public use
-  _TT(int clause, int id)
+  Term(int clause, int id)
       : _id = id,
         _clause = clause;
 
@@ -20,9 +21,12 @@ class _TT {
   /// turns an id into a name
   int get name => _id;
 
+  /// turns an id into a functor
+  int get functor => _id;
+
   /// returns a string representation of the object
   String string(int i) {
-    var ret = '_TT'
+    var ret = 'Term'
         '${clause.toString()}.${id.toString()}';
     return ret;
   }
@@ -33,22 +37,28 @@ class _TT {
   }
 
   ///
-  _TT substitute(Bindings b) => _substitute(this, b);
+  Term substitute(Bindings b) => _substitute(this, b);
 
   ///
-  _TT _substitute(_TT trm, Bindings b) {
+  Term _substitute(Term trm, Bindings b) {
     var term = b.getBinding(trm);
 
     ///Case 1
-    if (term is _T) {
-      var tl = term.termlist.map((_TT sub) {
+    if (term is Compound) {
+      var tl = term.termlist.map((Term sub) {
         return _substitute(sub, b);
       }).toList();
-      return t(term.clause, term.id, tl);
+      return c(term.clause, term.id, tl);
 
       /// Case 2
-    } else if (term is _V) {
+    } else if (term is Variable) {
       return v(term.clause, term.id);
+      //
+    } else if (term is Number) {
+      return n(term.clause, term.id, term.value);
+      //
+    } else if (term is Atom) {
+      return a(term.clause, term.id, term.value);
 
       ///
     } else {
@@ -70,7 +80,7 @@ class _TT {
 
   /// post occurs check
   /// tests for circularity
-  bool _occurs(_TT term, Bindings b, SplayTreeSet<Key> sn) {
+  bool _occurs(Term term, Bindings b, SplayTreeSet<Key> sn) {
     var t = b.getBinding(term);
     //print('t ${term}  t ${t} seen ${sn.length}');
     if (sn.contains(Key.from(t))) {
@@ -79,8 +89,8 @@ class _TT {
     sn.add(Key.from(t));
 
     /// Case 1
-    if (t is _T) {
-      for (_TT sub in t.termlist) {
+    if (t is Compound) {
+      for (var sub in t.termlist) {
         var submap = SplayTreeSet<Key>();
         submap.addAll(sn);
         _occurs(sub, b, submap);
@@ -88,7 +98,9 @@ class _TT {
       return false;
 
       /// Case 2
-    } else if (t is _V) {
+    } else if (t is Variable) {
+      return false;
+    } else if (t is NonVariable) {
       return false;
 
       /// no case
@@ -99,4 +111,27 @@ class _TT {
 
   /// to avoid circularity in function [mgu]
   bool visited = false;
+}
+
+/// Variable Variable
+class NonVariable extends Term {
+  /// not for public use
+  NonVariable(int clause, int id) : super(clause, id);
+}
+
+// TODO
+class Argument extends Term {
+  /// not for public use
+  Argument(int clause, int id) : super(clause, id);
+}
+// TODO
+class InArgument extends Argument {
+  /// not for public use
+  InArgument(int clause, int id) : super(clause, id);
+}
+
+// TODO
+class OutArgument extends Argument {
+  /// not for public use
+  OutArgument(int clause, int id) : super(clause, id);
 }

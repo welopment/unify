@@ -3,7 +3,7 @@ part of unify;
 /// Rusizca & Privara's Unification Algorithm
 
 ///
-bool mgu(_TT s1, _TT t1, Bindings bindings) {
+bool mgu(Term s1, Term t1, Bindings bindings) {
   // var s = m[Key(s1.clause, s1.id)].substitution ?? s1;
   // var t = m[Key(t1.clause, t1.id)].substitution ?? t1;
   var s = bindings.getBinding(s1);
@@ -12,7 +12,7 @@ bool mgu(_TT s1, _TT t1, Bindings bindings) {
   var b = true;
 
   /// Case 1
-  if (s is _T && t is _T) {
+  if (s is Compound && t is Compound) {
     if (s.name != t.name) {
       return false;
     }
@@ -36,7 +36,7 @@ bool mgu(_TT s1, _TT t1, Bindings bindings) {
         b = false;
         // return false;
         // folgende Bedingnung macht den Algorithmus effizienter,
-        // sofern auch _T gegen _T substituiert wird.
+        // sofern auch Compound gegen Compound substituiert wird.
       } else if (sub1.clause != sub2.clause || sub1.id != sub2.id) {
         sub1.visited = true;
         sub2.visited = true;
@@ -49,7 +49,7 @@ bool mgu(_TT s1, _TT t1, Bindings bindings) {
     }
 
     // macht den Algorithmus effizienter, da
-    // äquivalente _Ts derselben Klasse
+    // äquivalente Compounds derselben Klasse
     // nicht mehrmals besucht werden.
     if (b) {
       // bindings.bindTT(s, t);
@@ -58,26 +58,27 @@ bool mgu(_TT s1, _TT t1, Bindings bindings) {
 
   ///
   /// Case 2
-  // s oder t können nur dann _V sein, wenn
+  // s oder t können nur dann Variable sein, wenn
   // getBinding nichts verändert, d.h. wenn die Äquivalenzklasse leer war.
-  else if (s is _V && t is _V) {
+  else if (s is Variable && t is Variable) {
     bindings.bindVV(s, t);
 
     b = true;
 
     /// Case 3
-    // s kann nur dann _V sein, wenn
+    // s kann nur dann Variable sein, wenn
     // getBinding nicht verändert, d.h. wenn die Äquivalenzklasse leer war.
-  } else if (s is _V && t is _T) {
-    bindings.bindVT(s, t);
+  } else if (s is Variable && t is NonVariable){ //
+    // (t is Compound || t is Constant) ) 
+    bindings.bindVC(s, t);
 
     b = true;
 
     /// Case 4
-    // t kann nur dann _V sein, wenn
+    // t kann nur dann Variable sein, wenn
     // getBinding nicht verändert, d.h. wenn die Äquivalenzklasse leer war.
-  } else if (s is _T && t is _V) {
-    bindings.bindTV(s, t);
+  } else if ( s is NonVariable && t is Variable) {
+    bindings.bindCV(s, t);
 
     b = true;
 

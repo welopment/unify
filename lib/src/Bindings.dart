@@ -21,7 +21,11 @@ class Bindings {
   }
 
   /// ersetzt s durch t
-  void bindVT(_V s, _T t) {
+  void bindVC(Variable s, NonVariable t) {
+    if (t is Variable) {
+      throw Exception('Bindings.bindVC: t must not be Variable');
+    }
+
     // print('${s} ${t}');
     var m = _m;
     var i = Key.from(s);
@@ -48,10 +52,15 @@ class Bindings {
   }
 
   /// Wiederverwendung
-  void bindTV(_T s, _V t) => bindVT(t, s);
+  void bindCV(NonVariable s, Variable t) {
+    if (s is Variable) {
+      throw Exception('Bindings.bindVC: t must not be Variable');
+    }
+    bindVC(t, s);
+  }
 
   ///
-  void bindVV(_V s, _V t) {
+  void bindVV(Variable s, Variable t) {
     var m = _m;
 
     ///
@@ -62,7 +71,7 @@ class Bindings {
 
     ///
     /// Case 1
-    /// für keine Variable [_V] existiert eine Substitution,
+    /// für keine Variable [Variable] existiert eine Substitution,
     /// eine solche wäre ausschließlich durch
     /// Bindung zwischen Variablen (V V) möglich.
     if (mS == null && mT == null) {
@@ -101,7 +110,7 @@ class Bindings {
 
       /// ggf. redundant
       var br = subst._backReferences;
-      for (Key i in br) {
+      for (var i in br) {
         m[i] = subst;
       }
 
@@ -113,7 +122,7 @@ class Bindings {
 
   /// der Effiziez wegen
 
-  void bindTT(_T s, _T t) {
+  void bindCC(Compound s, Compound t) {
     ///
     var m = _m;
 
@@ -125,13 +134,13 @@ class Bindings {
     } else if (m[Key.from(s)] != null) {
       var ids = Key.from(s);
 
-      /// wenn beide _TT ungleiche Namen haben
-      if (m[ids].substitution != null && m[ids].substitution?.id != t.id) {
+      /// wenn beide Term ungleiche Namen haben
+      if (m[ids].substitution != null && m[ids].substitution.id != t.id) {
         throw Exception('mgu, Case 1: '
-            'try to replace with different/wrong _T.id.');
+            'try to replace with different/wrong Compound.id.');
 
         /// wenn Substitution leer ist, oder
-        /// wenn beide _TT gleiche Namen haben
+        /// wenn beide Term gleiche Namen haben
       } else {
         m[Key.from(s)].substitution = t;
       }
@@ -143,26 +152,30 @@ class Bindings {
   }
 
   ///  Verallgemeinerung
-  void bind(_TT term1, _TT term2) {
-    if (term1 is _V && term2 is _V) {
+  void bind(Term term1, Term term2) {
+    if (term1 is Variable && term2 is Variable) {
       bindVV(term1, term2);
-    } else if (term1 is _T && term2 is _V) {
-      bindTV(term1, term2);
-    } else if (term1 is _V && term2 is _T) {
-      bindVT(term1, term2);
-    } else if (term1 is _T && term2 is _T) {
-      bindTT(term1, term2);
+    } else if (term1 is Compound && term2 is Variable) {
+      bindCV(term1, term2);
+    } else if (term1 is Variable && term2 is Compound) {
+      bindVC(term1, term2);
+    } else if (term1 is Compound && term2 is Compound) {
+      bindCC(term1, term2);
     } else {
       throw Exception('Bindings.bind: unknown case.');
     }
   }
 
-  _TT getBinding(_TT s) {
+  Term getBinding(Term s) {
     //print('getBinding: ${s.toString()}');
     var m = _m[Key.from(s)];
 
     if (m != null) {
-      return m.substitution ?? s;
+      if (m.substitution != null) {
+        return m.substitution;
+      } else {
+        return s;
+      }
     } else {
       return s;
     }

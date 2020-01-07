@@ -2,8 +2,14 @@ part of unify;
 
 /// factory-like functions, for public use
 
-/// constructs terms [_T]
-_T t(int c, int i, List<_TT> l) => _T(c, i, l);
+/// constructs terms [Compound]
+Compound f(int c, int i, List<Term> l) => Compound(c, i, l);
+Compound c(int c, int i, List<Term> l) => Compound(c, i, l);
+/// constructs variables [Variable]
+Variable v(int c, int i) => Variable(c, i);
 
-/// constructs variables [_V]
-_V v(int c, int i) => _V(c, i);
+/// constructs variables [Variable]
+Number n(int c, int i, num n) => Number(c, i, n);
+
+/// constructs variables [Variable]
+Atom a(int c, int i, String s) => Atom(c, i, s);

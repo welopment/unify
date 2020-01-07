@@ -1,27 +1,27 @@
 part of unify;
 
-/// Term _T
-class _T extends _TT {
+/// Funktion oder Prädikat
+class Compound extends NonVariable {
   /// not for use in public ;-)
   /// terms with same [clause] and [id]
   /// must have same [unique] and
   /// must be the same object.
-  _T(int clause, int id, List<_TT> t)
+  Compound(int clause, int id, List<Term> t)
       : _termlist = t,
         super(clause, id);
 
-  List<_TT> _termlist;
+  List<Term> _termlist;
 
   /// gets the list of terms
-  List<_TT> get termlist => _termlist;
+  List<Term> get termlist => _termlist;
 
   /// sets the list of terms
-  set termlist(List<_TT> tl) => _termlist = tl;
+  set termlist(List<Term> tl) => _termlist = tl;
 
   /// returns a string representation of a term object
   @override
   String toString() {
-    return '_T'
+    return 'Compound'
         '${clause.toString()}.${id.toString()}'
         '${termlist}';
   }
@@ -29,7 +29,7 @@ class _T extends _TT {
   /// equality requires same [clause], [id], and [termlist]s
   @override
   bool operator ==(dynamic other) {
-    if (other is _T) {
+    if (other is Compound) {
       //
       // 1.
       var equalclauses = clause == other.clause;

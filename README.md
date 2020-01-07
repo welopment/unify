@@ -3,13 +3,12 @@ Unify
 
 An implementation of Ruzicka und Privara's algorithm of logical unification for dart and flutter.
 
-This algorithm is an optimization of Corbin and Bidoit's algorithm, which itself is based on Robinson's well known algorithmus, which is also available as 'package:unification'.
+This algorithm is an optimization of Corbin and Bidoit's algorithm, which itself is based on Robinson's well known algorithm available as 'package:unification'.
 
-Robinson's algorithm is inefficient if the same subterm is given in several locations of a term tree, leading to repeated calculations. Ruzicka und Privara's algorithm takes the structure of terms into account by using directed acyclic graphs instead of the original term trees to avoid unnecessarily repeated calculations. Ideally, in this reduced DAG all equal subterms are represented by one identical subgraph, i.e. one and the same term object.
+Robinson's algorithm is inefficient if the same subterm is given in several locations of a term, leading to unnecessarily repeated calculations. Ruzicka und Privara's algorithm takes the structure of the term into account by using a directed acyclic graph [DAG] instead of the original term tree to avoid such unnecessarily repeated calculations. Ideally, in this reduced DAG all equal subterms are represented by one identical subgraph, i.e. one and the same term object.
 
-The occurs check is executed after the actual unification.
-
-The current implementation is an approximation of Ruzicka und Privara's algorithm. The original version resides in src2 and can be imported by as ```dart import 'package:unify/unify.dart'```;
+The current implementation is an approximation of Ruzicka und Privara's algorithm. The original version is given in directory src2 and can be 
+imported by as ```dart import 'package:unify/unify2.dart'```;
 
 # Getting started
 
@@ -29,7 +28,7 @@ Add the import statement to your source files:
 Or, give it a try and run the example:
 
 ```dart
-dart --enable-experiment=non-nullable ./example/main.dart 
+dart ./example/main.dart 
 ```
 
 Modify the example to test more complex tasks!

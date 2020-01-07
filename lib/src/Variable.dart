@@ -1,21 +1,22 @@
 part of unify;
 
-/// Variable _V
-class _V extends _TT {
+
+/// Variable Variable
+class Variable extends Term {
   /// not for public use in
-  _V(int clause, int id) : super(clause, id);
+  Variable(int clause, int id) : super(clause, id);
 
   ///
   @override
   String toString() {
-    return '_V'
+    return 'Variable'
         '${clause.toString()}.${id.toString()}';
   }
 
   /// equality requires same [clause] and [id]
   @override
   bool operator ==(dynamic other) {
-    if (other is _T) {
+    if (other is Compound) {
       /// 1.
       var equalclauses = clause == other.clause;
 

@@ -25,17 +25,22 @@ class Substitution {
     /// beide nicht null aber ungleiche namen
     if (s1.substitution != null &&
         s2.substitution != null &&
-        s1.substitution?.id != s2.substitution?.id) {
-      throw Exception('Substitution.add: different _T.id');
+        s1.substitution.id != s2.substitution.id) {
+      throw Exception('Substitution.add: different Compound.id');
 
       /// gleich oder gleich machbar
     } else if ((s1.substitution != null &&
             s2.substitution != null &&
-            s1.substitution?.id == s2.substitution?.id) ||
+            s1.substitution.id == s2.substitution.id) ||
         (s1.substitution != null && s2.substitution == null) ||
         (s1.substitution == null && s2.substitution != null)) {
       ///
-      var su = s1.substitution ?? s2.substitution;
+      var su;
+      if (s1.substitution != null) {
+        su = s1.substitution;
+      } else {
+        su = s2.substitution;
+      }
 
       Substitution._uni++;
       var ret = Substitution(_uni)
@@ -56,7 +61,7 @@ class Substitution {
 
   ///
 
-  factory Substitution.bound(_TT t, _T s) {
+  factory Substitution.bound(Term t, Term s) {
     Substitution._uni++;
 
     var su = Substitution(_uni);
@@ -83,7 +88,7 @@ class Substitution {
   ///
   Set<Key> _backReferences;
 
-  set addBackReference(_TT t) {
+  set addBackReference(Term t) {
     _backReferences.add(Key.from(t));
   }
 
@@ -92,11 +97,11 @@ class Substitution {
   }
 
   ///
-  _T? _substitution;
+  dynamic _substitution;
 
-  _T? get substitution => _substitution;
+  Compound get substitution => _substitution;
 
-  set substitution(_T? substitution) {
+  set substitution(Term substitution) {
     _substitution = substitution;
   }
 

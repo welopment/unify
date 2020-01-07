@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.2
+- improve README
+
+## 0.2.1
+- use dynamic instead of null aware operators because pana isn't able to deal with nnbd 
+
 ## 0.2.0
 - new implementation
 
