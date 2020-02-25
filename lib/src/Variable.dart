@@ -1,9 +1,9 @@
 part of unify;
 
-
-/// Variable Variable
+/// A logical [Variable].
 class Variable extends Term {
-  /// not for public use in
+  /// Variables with the same [clause] and [id] represent the same object.
+  /// Better use the utility function [v] to construct a Variable.
   Variable(int clause, int id) : super(clause, id);
 
   ///
@@ -13,17 +13,17 @@ class Variable extends Term {
         '${clause.toString()}.${id.toString()}';
   }
 
-  /// equality requires same [clause] and [id]
+  /// Equality of [Variable]s requires [clause] and [id] to be equal
   @override
   bool operator ==(dynamic other) {
     if (other is Compound) {
-      /// 1.
+      // 1.
       var equalclauses = clause == other.clause;
 
-      /// 2.
+      // 2.
       var equalnames = id == other.id;
 
-      /// 1. ^ 2. ^ 3.
+      // 1. ^ 2.
       return equalclauses && equalnames;
     } else {
       return false;

@@ -1,9 +1,11 @@
 part of unify;
 
-// TODO: intern -> int
-/// Variable Variable
+/// An atomic formula is a formula with no deeper propositional structure,
+/// that is, a formula that contains no logical connectives or equivalently
+/// a formula that has no strict subformulas.
+/// Atoms are thus the simplest well-formed formulas of the logic.
 class Atom extends Constant<String> {
-  /// not for public use in
+  /// Better use the utility function [a] to construct a number.
   Atom(int clause, int id, String s)
       : _s = s,
         super(clause, id, s);
@@ -19,21 +21,13 @@ class Atom extends Constant<String> {
         '${clause.toString()}.${id.toString()}[$value]';
   }
 
-  /// equality requires same [clause] and [id]
+  /// Equality fo [Atom]s requires [values] to be equal.
   @override
   bool operator ==(dynamic other) {
     if (other is Atom) {
-      /// 1.
-      var equalclauses = clause == other.clause;
-
-      /// 2.
-      var equalnames = id == other.id;
-
-      /// 3.
       var equalvalues = value == other.value;
 
-      /// 1. ^ 2. ^ 3.
-      return equalclauses && equalnames && equalvalues;
+      return equalvalues;
     } else {
       return false;
     }

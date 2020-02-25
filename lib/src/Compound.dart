@@ -1,11 +1,8 @@
 part of unify;
 
-/// Funktion oder Prädikat
+/// A [Compound] term represents a function or predicate.
 class Compound extends NonVariable {
-  /// not for use in public ;-)
-  /// terms with same [clause] and [id]
-  /// must have same [unique] and
-  /// must be the same object.
+  /// Better use the utility function [c] to construct a number.
   Compound(int clause, int id, List<Term> t)
       : _termlist = t,
         super(clause, id);
@@ -18,6 +15,9 @@ class Compound extends NonVariable {
   /// sets the list of terms
   set termlist(List<Term> tl) => _termlist = tl;
 
+  /// turns an id into a functor
+  int get functor => _id;
+
   /// returns a string representation of a term object
   @override
   String toString() {
@@ -26,7 +26,7 @@ class Compound extends NonVariable {
         '${termlist}';
   }
 
-  /// equality requires same [clause], [id], and [termlist]s
+  /// Equality of [Compound]s requires [clause], [id], and [termlist]s to be equal.
   @override
   bool operator ==(dynamic other) {
     if (other is Compound) {

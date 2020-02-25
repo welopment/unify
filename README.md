@@ -7,8 +7,7 @@ This algorithm is an optimization of Corbin and Bidoit's algorithm, which itself
 
 Robinson's algorithm is inefficient if the same subterm is given in several locations of a term, leading to unnecessarily repeated calculations. Ruzicka und Privara's algorithm takes the structure of the term into account by using a directed acyclic graph [DAG] instead of the original term tree to avoid such unnecessarily repeated calculations. Ideally, in this reduced DAG all equal subterms are represented by one identical subgraph, i.e. one and the same term object.
 
-The current implementation is an approximation of Ruzicka und Privara's algorithm. The original version is given in directory src2 and can be 
-imported by as ```dart import 'package:unify/unify2.dart'```;
+The current implementation is an approximation of Ruzicka und Privara's algorithm. 
 
 # Getting started
 

@@ -13,3 +13,4 @@ Number n(int c, int i, num n) => Number(c, i, n);
 
 /// constructs variables [Variable]
 Atom a(int c, int i, String s) => Atom(c, i, s);
+

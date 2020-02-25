@@ -1,16 +1,23 @@
 part of unify;
 
-/// term type, from which Compound
-///  and Variable  are derived.
-///
+/// Superclass from which all other classes are derived.
 class Term {
-  /// not for public use
+  /// Terms with the same values of [clause] and [id] represent the same object
+  /// and have the same value of [unique]
   Term(int clause, int id)
       : _id = id,
-        _clause = clause;
+        _clause = clause,
+        _unique = _u++;
+
+  final int _unique;
+
+  static int _u = 0;
+
+  int get unique => _unique;
 
   /// name of the clause, i.e. namespace
   final int _clause;
+
   int get clause => _clause;
 
   /// id, i.e. name of the term or variable
@@ -21,8 +28,8 @@ class Term {
   /// turns an id into a name
   int get name => _id;
 
-  /// turns an id into a functor
-  int get functor => _id;
+  @override
+  int get hashCode => Key(clause, id).hashCode;
 
   /// returns a string representation of the object
   String string(int i) {
@@ -111,27 +118,4 @@ class Term {
 
   /// to avoid circularity in function [mgu]
   bool visited = false;
-}
-
-/// Variable Variable
-class NonVariable extends Term {
-  /// not for public use
-  NonVariable(int clause, int id) : super(clause, id);
-}
-
-// TODO
-class Argument extends Term {
-  /// not for public use
-  Argument(int clause, int id) : super(clause, id);
-}
-// TODO
-class InArgument extends Argument {
-  /// not for public use
-  InArgument(int clause, int id) : super(clause, id);
-}
-
-// TODO
-class OutArgument extends Argument {
-  /// not for public use
-  OutArgument(int clause, int id) : super(clause, id);
 }

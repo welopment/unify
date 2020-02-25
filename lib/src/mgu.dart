@@ -1,8 +1,6 @@
 part of unify;
 
 /// Rusizca & Privara's Unification Algorithm
-
-///
 bool mgu(Term s1, Term t1, Bindings bindings) {
   // var s = m[Key(s1.clause, s1.id)].substitution ?? s1;
   // var t = m[Key(t1.clause, t1.id)].substitution ?? t1;
@@ -11,7 +9,7 @@ bool mgu(Term s1, Term t1, Bindings bindings) {
 
   var b = true;
 
-  /// Case 1
+  /// Case 1: Unify [Compound]s.
   if (s is Compound && t is Compound) {
     if (s.name != t.name) {
       return false;
@@ -36,7 +34,7 @@ bool mgu(Term s1, Term t1, Bindings bindings) {
         b = false;
         // return false;
         // folgende Bedingnung macht den Algorithmus effizienter,
-        // sofern auch Compound gegen Compound substituiert wird.
+        // sofern auch Compounds gebunden werden.
       } else if (sub1.clause != sub2.clause || sub1.id != sub2.id) {
         sub1.visited = true;
         sub2.visited = true;
@@ -48,7 +46,7 @@ bool mgu(Term s1, Term t1, Bindings bindings) {
       }
     }
 
-    // macht den Algorithmus effizienter, da
+    // Macht den Algorithmus effizienter, da
     // äquivalente Compounds derselben Klasse
     // nicht mehrmals besucht werden.
     if (b) {
@@ -57,32 +55,33 @@ bool mgu(Term s1, Term t1, Bindings bindings) {
   }
 
   ///
-  /// Case 2
-  // s oder t können nur dann Variable sein, wenn
-  // getBinding nichts verändert, d.h. wenn die Äquivalenzklasse leer war.
+  /// Case 2: Unify [Variable]s.
+  /// s oder t können nur dann Variable sein, wenn gemäß
+  /// getBinding kein Binding gefunden wurde, d.h. wenn die Äquivalenzklasse leer war.
   else if (s is Variable && t is Variable) {
     bindings.bindVV(s, t);
 
     b = true;
 
-    /// Case 3
-    // s kann nur dann Variable sein, wenn
-    // getBinding nicht verändert, d.h. wenn die Äquivalenzklasse leer war.
-  } else if (s is Variable && t is NonVariable){ //
-    // (t is Compound || t is Constant) ) 
+    /// Case 3: Unify a [Variable] with a [NonVariable].
+    /// s kann nur dann Variable sein, wenn gemäß
+    /// getBinding für diese kein Binding gefunden wurde.
+  } else if (s is Variable && t is NonVariable) {
+    //
+    // (t is Compound || t is Constant) )
     bindings.bindVC(s, t);
 
     b = true;
 
-    /// Case 4
-    // t kann nur dann Variable sein, wenn
-    // getBinding nicht verändert, d.h. wenn die Äquivalenzklasse leer war.
-  } else if ( s is NonVariable && t is Variable) {
+    /// Case 4: Unify a [NonVariable] with a [Variable].
+    /// t kann nur dann Variable sein, wenn gemäß
+    /// getBinding für diese kein Binding gefunden wurde.
+  } else if (s is NonVariable && t is Variable) {
     bindings.bindCV(s, t);
 
     b = true;
 
-    // No Case
+    // Unknown case.
   } else {
     throw Exception('Unknown Case.');
   }

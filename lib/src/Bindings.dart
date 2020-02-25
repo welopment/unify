@@ -1,5 +1,10 @@
 part of unify;
 
+/// Bindings include logical substitutions as well as substitutions that improve
+/// performance. As an example of the first case let a variable to be bound to
+/// a [Number]. As an example of the second case a [Compound] can be bound to
+/// another [Compound] by calling [bindCC] if the subterms of these [Compound]s
+/// are unifiable to avoid unnecessary revisiting of subterms.
 class Bindings {
   ///
   Bindings(SplayTreeMap<Key, Substitution> m) : _m = m;
@@ -10,7 +15,6 @@ class Bindings {
 
   ///
   final SplayTreeMap<Key, Substitution> _m;
-
   @override
   String toString() {
     var s = '{';
@@ -20,7 +24,7 @@ class Bindings {
     return s + '}';
   }
 
-  /// ersetzt s durch t
+  /// Bin ersetzt s durch t
   void bindVC(Variable s, NonVariable t) {
     if (t is Variable) {
       throw Exception('Bindings.bindVC: t must not be Variable');
@@ -51,15 +55,22 @@ class Bindings {
     }
   }
 
-  /// Wiederverwendung
+  /// The method [bindCV] performs a logical substitution and by reusing [bindVC] as its mirror case.
   void bindCV(NonVariable s, Variable t) {
     if (s is Variable) {
-      throw Exception('Bindings.bindVC: t must not be Variable');
+      throw Exception('Bindings.bindCV: t must not be Variable');
     }
     bindVC(t, s);
   }
 
-  ///
+  /// The method [bindVV] performs a logical substitution and binds two [Variable]s
+  /// together. These [Variable]s become part of the same equivalence class.
+  /// Four logical cases:
+  /// Case 1:  Both [Variable]s are free. They become part of a new equivalence class
+  /// Case 2:  Left [Variable] was free and is now bound. Both are now part of an existing equivalence class.
+  /// Case 3:  Right [Variable] was free and ist now bound. Both are now part of an existing equivalence class.
+  /// Case 4:  Both [Variable]s were already bound and bindings are fused.
+
   void bindVV(Variable s, Variable t) {
     var m = _m;
 
@@ -120,8 +131,9 @@ class Bindings {
     }
   }
 
-  /// der Effiziez wegen
-
+  /// The method [bindCC] does not perform a logical substitution but
+  /// improves performance by avoiding the unnecessarily repeted unification of
+  /// [Comound]s that were already found to be unifiable.
   void bindCC(Compound s, Compound t) {
     ///
     var m = _m;
@@ -151,7 +163,8 @@ class Bindings {
     }
   }
 
-  ///  Verallgemeinerung
+  /// The method [bind] branches into [bindVV], [bindCV], [bindVC], and [bindCC]
+  /// according to the type of the arguments.
   void bind(Term term1, Term term2) {
     if (term1 is Variable && term2 is Variable) {
       bindVV(term1, term2);
@@ -166,6 +179,7 @@ class Bindings {
     }
   }
 
+  /// Returns the term bound to the variable given as argument.
   Term getBinding(Term s) {
     //print('getBinding: ${s.toString()}');
     var m = _m[Key.from(s)];
